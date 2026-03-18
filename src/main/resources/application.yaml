@@ -1,0 +1,19 @@
+server:
+  port: 8595
+
+spring:
+  application:
+  name: kalita
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kalita_db
+    name: kalita_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        default_schema: kalita_db
+        show_sql: true
+        format_sql: true
+

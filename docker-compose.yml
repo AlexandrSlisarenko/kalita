@@ -1,0 +1,15 @@
+version: '1.0'
+name: kalita-service
+
+services:
+  app:
+    build: .
+    image: promotion-service-1.0.0
+    container_name: promotion-service
+
+    environment:
+      DATABASE_USERNAME: ${db_username}
+      DATABASE_PASSWORD: ${db_password}
+      DATABASE_URL: ${db_url}
+    ports:
+      - "8090:8090"

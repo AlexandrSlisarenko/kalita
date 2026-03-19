@@ -1,5 +1,6 @@
 package ru.slisarenko.kalita.persist.service;
 
+import jakarta.transaction.Transactional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ public class WalletService {
         return this.walletRepository.findById(id).orElseThrow(() -> new WalletNotFoundException("Wallet not found"));
     }
 
+    @Transactional
     public Wallet save(Wallet wallet) {
         wallet.setWalletId(UUID.randomUUID());
         log.info("NEW ID: " + wallet.getWalletId());
@@ -29,11 +31,16 @@ public class WalletService {
         return !this.walletRepository.existsById(wallet.getWalletId());
     }
 
+    @Transactional
     public Wallet update(Wallet wallet) {
-        var walletFromDB = get(wallet.getWalletId());
+        /*var walletFromDB = get(wallet.getWalletId());
         walletFromDB.setOperationType(wallet.getOperationType());
-        walletFromDB.setAmount(wallet.getAmount());
-        return this.walletRepository.save(walletFromDB);
+        walletFromDB.setAmount(wallet.getAmount());*/
+        if (exists(wallet.getWalletId())) {
+            return this.walletRepository.save(wallet);
+        } else {
+            return wallet;
+        }
     }
 
     public boolean exists(UUID id) {

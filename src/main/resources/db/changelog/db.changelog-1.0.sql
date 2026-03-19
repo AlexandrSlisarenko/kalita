@@ -12,3 +12,6 @@ CREATE TABLE IF NOT EXISTS kalita.wallet
     amount NUMERIC(8,2) NOT NULL
 );
 --rollback DROP TABLE IF EXISTS kalita.wallet;
+
+--changeset aslisarenko:3
+INSERT INTO kalita.wallet(walletId, operationType, amount) VALUES ('a31f2209-638a-4829-b3f3-94bc33a385e1', 'OPEN', 100.00)

@@ -7,4 +7,5 @@ import ru.slisarenko.kalita.persist.model.Wallet;
 
 @Repository
 public interface WalletRepository extends JpaRepository<Wallet, UUID> {
+    boolean existsByWalletId(UUID id);
 }

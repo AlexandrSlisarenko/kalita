@@ -24,7 +24,7 @@ class KalitaServiceTest {
      void createWallet() {
         uuid = UUID.randomUUID();
         wallet = WalletDTO.builder()
-                .id(uuid.toString())
+                .walletId(uuid.toString())
                 .operationType(OperationType.OPEN.toString())
                 .amount(startBalance)
                 .build();
@@ -35,7 +35,7 @@ class KalitaServiceTest {
     @Test
     void open() {
         Assertions.assertNotNull(this.wallet);
-        Assertions.assertNotEquals(uuid, this.wallet.id());
+        Assertions.assertNotEquals(uuid, this.wallet.walletId());
         Assertions.assertTrue(this.kalitaService.close(this.wallet));
     }
 
@@ -44,12 +44,12 @@ class KalitaServiceTest {
         var type = OperationType.DEPOSIT.toString();
         var amount = 500.00;
         var walletTest = WalletDTO.builder()
-                .id(wallet.id())
+                .walletId(wallet.walletId())
                 .amount(amount)
                 .operationType(type)
                 .build();
         walletTest = this.kalitaService.deposit(walletTest);
-        Assertions.assertEquals(wallet.id(), walletTest.id());
+        Assertions.assertEquals(wallet.walletId(), walletTest.walletId());
         Assertions.assertEquals(amount + startBalance, walletTest.amount());
         Assertions.assertEquals(type, walletTest.operationType());
         Assertions.assertTrue(this.kalitaService.close(walletTest));
@@ -60,12 +60,12 @@ class KalitaServiceTest {
         var type = OperationType.WITHDRAW.toString();
         var amount = 50.00;
         var walletTest = WalletDTO.builder()
-                .id(wallet.id())
+                .walletId(wallet.walletId())
                 .amount(amount)
                 .operationType(type)
                 .build();
         walletTest = this.kalitaService.withDraw(walletTest);
-        Assertions.assertEquals(wallet.id(), walletTest.id());
+        Assertions.assertEquals(wallet.walletId(), walletTest.walletId());
         Assertions.assertEquals(startBalance - amount, walletTest.amount());
         Assertions.assertEquals(type, walletTest.operationType());
         Assertions.assertTrue(this.kalitaService.close(walletTest));

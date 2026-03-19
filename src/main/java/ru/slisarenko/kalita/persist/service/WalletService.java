@@ -37,6 +37,6 @@ public class WalletService {
     }
 
     public boolean exists(UUID id) {
-        return this.walletRepository.existsById(id);
+        return this.walletRepository.existsByWalletId(id);
     }
 }

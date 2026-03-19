@@ -12,7 +12,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.UUID;
-import ru.slisarenko.kalita.enums.OperationTypes;
+import ru.slisarenko.kalita.enums.OperationType;
 
 @Entity
 @Table(schema = "kalita", name="wallet")
@@ -23,11 +23,12 @@ import ru.slisarenko.kalita.enums.OperationTypes;
 public class Wallet {
 
     @Id
+    @Column(name = "walletid", unique = true, nullable = false)
     private UUID walletId;
 
     @Column(name = "operationtype", nullable = false)
     @Enumerated(EnumType.STRING)
-    private OperationTypes operationType;
+    private OperationType operationType;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;

@@ -1,15 +1,39 @@
-version: '1.0'
-name: kalita-service
+version: '3.8'
+name: 'kalita'
 
 services:
+  postgres:
+    image: postgres:17
+    container_name: kalita_db_postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5442:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 2s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
   app:
     build: .
-    image: promotion-service-1.0.0
-    container_name: promotion-service
-
-    environment:
-      DATABASE_USERNAME: ${db_username}
-      DATABASE_PASSWORD: ${db_password}
-      DATABASE_URL: ${db_url}
+    container_name: kalita-service
     ports:
-      - "8090:8090"
+      - "8998:8595"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_LIQUIBASE_ENABLED: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

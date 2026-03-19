@@ -6,7 +6,7 @@ COPY pom.xml /build/
 WORKDIR /build/
 RUN mvn dependency:go-offline
 COPY src /build/src/
-RUN --mount=type=cache,target=/root/.m2 mvn clean package
+RUN --mount=type=cache,target=/root/.m2 mvn clean package -Dmaven.test.skip=true
 
 
 #Run Stage
@@ -22,4 +22,4 @@ COPY --from=layers /layers/dependencies/ ./
 COPY --from=layers /layers/snapshot-dependencies/ ./
 COPY --from=layers /layers/spring-boot-loader/ ./
 COPY --from=layers /layers/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]

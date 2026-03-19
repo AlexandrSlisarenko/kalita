@@ -27,25 +27,24 @@ class WalletServiceTest {
                 .operationType(OperationType.OPEN)
                 .amount(new BigDecimal("100.00"))
                 .build();
+        this.walletService.save(wallet);
     }
 
     @Test
     void open() {
-        var testWallet = this.walletService.open(wallet);
-        Assertions.assertNotEquals(uuid, testWallet.getWalletId());
-        Assertions.assertTrue(this.walletService.close(testWallet));
+        Assertions.assertNotNull(wallet.getWalletId());
+        Assertions.assertTrue(this.walletService.delete(wallet));
     }
 
     @Test
     void updateData(){
-        wallet = Wallet.builder()
-                .walletId(uuid)
-                .operationType(OperationType.OPEN)
-                .amount(new BigDecimal("100.00"))
-                .build();
-        var testWallet = this.walletService.open(wallet);
-        Wallet updateWalletTest = this.walletService.update(wallet);
-        Assertions.assertNotEquals(updateWalletTest.getWalletId(), testWallet.getWalletId());
-        Assertions.assertTrue(this.walletService.close(testWallet));
+        var testType = OperationType.DEPOSIT;
+        var testAmount = new BigDecimal("200.00");
+        wallet.setAmount(testAmount);
+        wallet.setOperationType(testType);
+        var updateWalletTest = this.walletService.update(wallet);
+        Assertions.assertEquals(testType, updateWalletTest.getOperationType());
+        Assertions.assertEquals( testAmount, updateWalletTest.getAmount());
+        Assertions.assertTrue(this.walletService.delete(wallet));
     }
 }

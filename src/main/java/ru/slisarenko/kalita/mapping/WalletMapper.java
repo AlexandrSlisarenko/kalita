@@ -14,7 +14,7 @@ public class WalletMapper {
         return WalletDTO.builder()
                 .id(wallet.getWalletId().toString())
                 .operationType(wallet.getOperationType().toString())
-                .amount(wallet.getAmount().longValue())
+                .amount(wallet.getAmount().doubleValue())
                 .build();
     }
 

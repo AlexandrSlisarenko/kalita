@@ -1,15 +1,17 @@
 server:
-  port: 8595
+  port: ${APP_PORT:8595}
 
 spring:
   application:
     name: kalita
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    name: postgres
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    name: ${SPRING_DATABASE_NAME:postgres}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:50}
   jpa:
     properties:
       hibernate:

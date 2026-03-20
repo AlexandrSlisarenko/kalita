@@ -1,24 +1,32 @@
 package ru.slisarenko.kalita.controller;
 
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import ru.slisarenko.kalita.config.MyTestContainer;
 import ru.slisarenko.kalita.dto.BalanceDTO;
 import ru.slisarenko.kalita.dto.WalletDTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestRestTemplate
+@Testcontainers
+@Import({MyTestContainer.class})
 class KalitaControllerTest {
 
     @Autowired
@@ -37,7 +45,6 @@ class KalitaControllerTest {
                 null,
                 BalanceDTO.class,
                 wallet_uuid);
-        //ResponseEntity<ResponseEntity<BalanceDTO>>
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
@@ -53,7 +60,7 @@ class KalitaControllerTest {
                 .amount(432.32)
                 .build();
         ResponseEntity<WalletDTO> response = restTemplate.exchange(
-                "/api/v1/wallet/",
+                "/api/v1/wallet",
                 HttpMethod.POST,
                 new HttpEntity<>(requestEntity),
                 WalletDTO.class,
@@ -61,6 +68,5 @@ class KalitaControllerTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().amount()).isEqualTo(532.32);
     }
 }

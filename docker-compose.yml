@@ -30,10 +30,12 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_LIQUIBASE_ENABLED: "true"
+      DB_POOL_SIZE: 50
     depends_on:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+
 
 volumes:
   postgres_data:
